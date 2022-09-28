@@ -1,0 +1,64 @@
+div {
+    position: block;
+}
+
+.inner-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    outline: 5px solid orange;
+    position: relative;
+    width: 660px;
+    text-align: center;
+    background-color: #b3b3b3;
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#buttons {
+    display: grid;
+    padding: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+
+button{
+    font-weight: bold;
+    font-size: 20px;
+    box-sizing: border-box;
+    background-color: grey;
+}
+
+button:active{
+    background-color: orange;
+}
+
+
+#panel {
+    text-align: center;
+    margin: auto 0px;
+}
+
+#panel h3{
+    margin: 0;
+}
+
+#panel div{
+    margin: 20px 0px;
+
+}
+
+#template {
+    font-weight: bold;
+    width: 200px;
+    background-color: gray;
+    margin: 15px auto;
+    padding: 15px;
+    box-sizing: border-box;
+    height: 50px;
+}
