@@ -25,9 +25,25 @@ class App extends React.Component {
 
 
   handleKeyPress(event) {
-    this.setState({
-      key: event.keyCode
-    })
+    if (bankOneOn) {
+      let arg = bankOne.find((element) => {
+        return element.keyCode === event.keyCode;
+      });
+      this.setState({
+        template: arg.id
+      })
+      new Audio(arg.url).play()
+    } else {
+      let arg = bankTwo.find((element) => {
+        return element.keyCode === event.keyCode;
+      });
+      this.setState({
+        template: arg.id
+      })
+      new Audio(arg.url).play()
+
+    }
+
 
   };
 
@@ -41,8 +57,8 @@ class App extends React.Component {
         template: event.target.value
       })
     }
-    console.log(event.target.id)
   }
+
 
   render() {
     return (
@@ -60,36 +76,107 @@ export default App;
 
 
 function Buttons() {
+
+
+
   const buttonsPadOne = bankOne.map(btn => {
-    return <button key={btn.keyCode} value={btn.id} id={btn.url} >{btn.keyTrigger}</button>;
+    return <button key={btn.keyCode} value={btn.id} id={btn.keyTrigger} onClick={() => {
+      new Audio(btn.url).play();
+    }
+  } >{btn.keyTrigger}</button>
+
+      
   });
 
-  const buttonsPadTwo = bankOne.map(btn => {
-    return <button key={btn.keyCode} value={btn.id} id={btn.url} >{btn.keyTrigger}</button>;
+  const buttonsPadTwo = bankTwo.map(btn => {
+    return <button key={btn.keyCode} value={btn.id} id={btn.keyTrigger} onClick={() => {
+      new Audio(btn.url).play();
+    }
+  } >{btn.keyTrigger}</button>;
   });
 
 
   return (
-    <div id='buttons'>
-      {buttonsPadOne}
-    </div>
+    buttonPressedPower ? 
+    buttonPressed ?
+      <div id='buttons'>
+        {buttonsPadOne}
+      </div>
+      :
+      <div id='buttons'>
+        {buttonsPadTwo}
+      </div>
+      :
+      <div>
+        <h3>Turn on the Drum Machine</h3>
+      </div>
   )
 }
 
 
-function Panel({ template = "" }) {
-  return (
-    <div id="panel">
-      <div><h3>Power</h3><button type='button'></button></div>
-      <div ><p id='template'>{template}</p></div>
-      <div><input type="range"></input></div>
-      <div><h3>Bank</h3><button type='button'></button></div>
-    </div>
-  )
+class Panel extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.buttonBank = this.buttonBank.bind(this);
+    this.buttonPower = this.buttonPower.bind(this)
+  }
+
+  buttonBank() {
+    buttonPressed = !buttonPressed
+    bankOneOn = !bankOneOn
+  }
+
+  buttonPower() {
+    buttonPressedPower = !buttonPressedPower
+    
+  }
+
+  render() {
+
+
+    return (
+      buttonPressedPower ? 
+      <div id="panel">
+        <div><h3>Power</h3>
+          <button id='switch' type='button'
+            className={buttonPressedPower ? "buttonOn" : "buttonOff"}
+            onClick={this.buttonPower}
+          ></button>
+        </div>
+        <div ><p id='template'>{this.props.template}</p></div>
+        <div><input type="range"></input></div>
+        <div><h3>Bank</h3>
+          <button id='switch' type='button'
+            className={buttonPressed ? "buttonOn" : "buttonOff"}
+            onClick={this.buttonBank}
+          ></button>
+        </div>
+      </div>
+      :
+      <div id="panel">
+        <div><h3>Power</h3>
+          <button id='switch' type='button'
+            className={buttonPressedPower ? "buttonOn" : "buttonOff"}
+            onClick={this.buttonPower}
+          ></button>
+        </div>
+        <div ><p id='template'></p></div>
+        <div><input type="range" disabled></input></div>
+        <div><h3>Bank</h3>
+          <button id='switch' type='button'
+          ></button>
+        </div>
+      </div>
+    )
+  }
+
+
 }
 
-
-
+let buttonPressed = true;
+let buttonPressedPower = true;
+let bankOneOn = true;
 
 const bankOne = [
   {
