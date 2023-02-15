@@ -80,6 +80,7 @@ function Buttons() {
 
 
   const buttonsPadOne = bankOne.map(btn => {
+    console.log(btn.id)
     return <button key={btn.keyCode} value={btn.id} id={btn.keyTrigger} onClick={() => {
       new Audio(btn.url).play();
     }
